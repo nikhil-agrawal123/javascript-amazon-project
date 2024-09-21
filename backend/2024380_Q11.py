@@ -4,6 +4,7 @@ def side_view(x): #finally spacing ki galti sahi kar di :)
         print()
 
 def top_view(x):
-    print("*"*(4*x-3))
+    for i in range(x):
+        print(' '*2*i + '*'*(4*(x-i-1) + 1))
 
-top_view(5)
+top_view(3)

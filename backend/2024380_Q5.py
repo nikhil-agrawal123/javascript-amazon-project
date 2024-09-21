@@ -1,8 +1,10 @@
+import math
+
 def demand(x):
-    return 10 - 1.05*x
+    return (10 - 1.05*x)
 
 def supply(x):
-    return 1 + 1.06*x
+    return (1 + 1.06*x)
 
 def main(x):
     price = x
