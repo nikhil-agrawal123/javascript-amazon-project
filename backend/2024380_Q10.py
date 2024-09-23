@@ -9,7 +9,7 @@ def leap_year(year):
             return True
     else:
         return False
-#leap year calculation formula taken from wikipedia
+#leap year calculation formula taken from copilot
 
 def month_number(month):
     if month == 'january':
@@ -38,15 +38,15 @@ def month_number(month):
         return 12
 
 def month_day(month, year):
-    if month == 'feburaryu':
+    if month == 'january' or month == 'march' or month == 'may' or month=='july' or month=='august' or month =='october' or month=='december':
+        return 31
+    elif month == 'april' or month == 'june' or month == 'september' or month == 'november':
+        return 30
+    else:
         if leap_year(year):
             return 29
         else:
             return 28
-    elif month == 'january' or month == 'march' or month == 'may' or month=='july' or month=='august' or month =='october' or month=='december':
-        return 30
-    else:
-        return 31
 
 def day_of_week(day, month, year):
     if year < 0:
@@ -72,4 +72,24 @@ def print_calendar(month, year):
             print()
     print()
 
-print_calendar(month_number(input('enter month ')), int(input('enter year (for bc input negativce year) ')))
+def display_again(x,y):
+    while True:
+        a = input('Next/Precvious/exit ')
+        if a == 'Next':
+            if x == 12:
+                return print_calendar(x+1,y+1)
+            else:
+                return print_calendar(x+1,y)
+        elif a == 'Previous':
+            if x == 1:
+                return print_calendar(x-1,y-1)
+            else:
+                return print_calendar(x-1,y)
+        else:
+            break
+input_month = input('enter month ')
+input_year = int(input('enter year (for bc input negativce year) '))
+
+print_calendar(month_number(input_month), input_year)
+
+display_again(month_number(input_month), input_year)    

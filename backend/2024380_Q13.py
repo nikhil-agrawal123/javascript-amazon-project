@@ -2,14 +2,16 @@ x,y=map(int,input().split())
 
 def reverse(x,y):
     c = 0
-    while x > 0:
-        x = x//10
-        c += 1
+    d = x
+    while d > 0:
+        d = d//10
+        c += 1 #found length of the number
 
-    remainder = x%(10**(c-y))
-    quotiont = x//(10**(c-y))
-    a = remainder*10**y + quotiont
-    return a,c
+    q = x//(10**(c-y))
+    r = x%(10**(c-y))
+    r_new = r*(10**y) + q
+
+    return r_new,c
 
 
 def even_odd_sum(x,y):
@@ -36,4 +38,4 @@ def even_odd_sum(x,y):
 
 #print(even_odd_sum(x))
 
-print(reverse(x,y))
+print(even_odd_sum(x,y))
