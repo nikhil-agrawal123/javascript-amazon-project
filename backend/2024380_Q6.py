@@ -1,10 +1,10 @@
-def slope(x):
-    return 3*x**2 - 21*x + 34.5
-
 def polynomail(x):
     return x**3 - 10.5*x**2 + 34.5*x - 35
 
-def roots(x):
+def slope(x):
+    return 3*x**2 - 21*x + 34.5
+
+def roots(x): 
     for i in range(100):
         x1 = x - polynomail(x)/slope(x)
         if abs(x1-x) <= 0.2:
@@ -15,7 +15,8 @@ def roots(x):
             else:
                 return "No such root exists"
 
-#print(roots(int(input('Enter a starting point: '))))
+x = int(input('Enter a starting point: '))
+print(roots(x))
 
 #bonus
 
@@ -27,5 +28,5 @@ def multi_roots(x,y):
             if y not in b:
                 b.append(y)
     return b
-print(multi_roots(int(input('Enter a starting point: ')),int(input('Enter a ending point: '))))
+#print(multi_roots(int(input('Enter a starting point: ')),int(input('Enter a ending point: '))))
 
