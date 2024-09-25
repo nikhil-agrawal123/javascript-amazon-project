@@ -80,14 +80,13 @@ def day_of_week(day, month, year):
     if month < 3:
         month += 12
         year -= 1
-    return (day + 13 * (month + 1) // 5 + year % 100 + (year % 100) // 4 + year // 400 - 2 * (year // 100)) % 7
+    return (day + 13 * (month + 1) // 5 + year % 100 + (year % 100) // 4 + year // 400 + 5 * (year // 100)) % 7
 #direct formula of calculation taken from wikipedia zeller's formula
 
 def print_calendar(month, year):
     print('Mon Tue Wed Thu Fri Sat Sun')
-
-    start = day_of_week(1, month, year)
-    start = (start + 5) % 7
+ 
+    start = (day_of_week(1, month, year) + 5) % 7
 
     print('    ' * start, end='')
 

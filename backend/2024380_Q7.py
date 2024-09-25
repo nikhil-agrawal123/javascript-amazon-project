@@ -30,6 +30,13 @@ def converge(x):
         i +=1
     return i
 
+def test():
+    assert gcd(0,0) == 'no such space found'
+    assert gcd(0,5) == 'no such space found'
+    assert density(1) == 0
+
+test()
+
 print(visible(z))
 print(density(z))
 print(converge(float(input('Enter a percentage to find from'))))

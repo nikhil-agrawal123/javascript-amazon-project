@@ -34,6 +34,13 @@ def max_population_year(population, growth_rate):
 
 print(max_population_year([50, 1450, 1400, 1700, 1500, 600, 1200], 2.5))
 
+def test():
+    assert max_population_year([50, 1450, 1400, 1700, 1500, 600, 1200], 2.5) == 13
+    assert max_population_year([50, 1450, 1400, 1700, 1500, 600, 1200], 2.25) == 11
+
+
+test()
+
 #bonus
 
 def max_population_year_2(population, growth_rate):

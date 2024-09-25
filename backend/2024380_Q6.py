@@ -15,8 +15,17 @@ def roots(x):
             else:
                 return "No such root exists"
 
+def test():
+    assert polynomail(0) == -35
+    assert slope(0) == 34.5
+    assert roots(0) == 1.992402021259231
+
+test()
+
 x = int(input('Enter a starting point: '))
 print(roots(x))
+
+
 
 #bonus
 

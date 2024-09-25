@@ -31,6 +31,15 @@ def height(x,b):
 def distance(x,b):
     return b/cos(x)
 
+def test():
+    assert round(sin(30),2) == 0.5
+    assert round(cos(60),2) == 0.5
+    assert round(tan(45),2) == 1
+    assert round(height(45,1),2) == 1
+    assert round(distance(45,1),2) == 1.41
+
+test()
+
 a = float(input('enter angle: '))
 b = float(input('enter base: '))
 

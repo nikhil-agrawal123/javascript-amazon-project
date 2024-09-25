@@ -116,5 +116,12 @@ def number_to_words(number):
 
     return result
 
+def test():
+    assert number_to_words(0) == "zero"
+    assert number_to_words(1) == "one"
+    assert number_to_words(10) == "ten"
+    assert number_to_words(11036) == "eleven thousand thirty six"
+test()
+
 x = int(input("Enter a number up to 100 crore: "))
 print(number_to_words(x))

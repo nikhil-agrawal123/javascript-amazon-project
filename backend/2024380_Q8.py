@@ -11,4 +11,9 @@ def output(x,y):
 
     return (y_new)
 
-print(output(0,int(input())))
+def test():
+    assert dydx(0,1) == 1
+    assert output(0,1) == 3.6062334122200004
+test()
+
+print(output(0,float(input('Enter a value of y: '))))

@@ -1,4 +1,4 @@
-x,y=map(int,input().split())
+x,y=map(int,input('give space seperated 2 values').split())
 
 def reverse(x,y):
     c = 0
@@ -31,11 +31,12 @@ def even_odd_sum(x,y):
         return f'{x} is the lucky number'
     else:
         return f'{x-1} is the lucky number'
-    
-    
 
-
-
-#print(even_odd_sum(x))
+def test():
+    assert reverse(1234,2) == (3412,4)
+    assert reverse(1234,1) == (4123,4)
+    assert even_odd_sum(1234,2) == '1234 is the lucky number'
+    assert even_odd_sum(1234,1) == '1233 is the lucky number'
+test()
 
 print(even_odd_sum(x,y))
