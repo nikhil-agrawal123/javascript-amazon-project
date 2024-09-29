@@ -116,14 +116,10 @@
 .added-to-cart {
   color: rgb(6, 125, 98);
   font-size: 16px;
-
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  opacity: 0;
+  margin-left: 12px;
 }
 
-.added-to-cart img {
+.added {
   height: 20px;
   margin-right: 5px;
 }

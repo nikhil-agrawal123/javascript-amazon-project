@@ -1,3 +1,5 @@
+import {cart} from '../data/cart.js';
+import {products} from '../data/products.js';
 let productsHtml = '';
 products.forEach((product)=>{
     productsHtml += `
@@ -24,7 +26,7 @@ products.forEach((product)=>{
           </div>
 
           <div class="product-quantity-container">
-            <select class='js-quant-select-${product.productId}'>
+            <select class='js-quant-select-${product.id}'>
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -40,7 +42,7 @@ products.forEach((product)=>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart-${product.id} added-to-cart">
           </div>
 
           <button class="add-to-cart-button button-primary js-add-to-cart-button"
@@ -53,31 +55,39 @@ products.forEach((product)=>{
 
 document.querySelector('.products-grid').innerHTML = productsHtml;
 document.querySelectorAll('.js-add-to-cart-button').forEach((button) => {
-button.addEventListener('click' , () => {
-    const productId = button.dataset.productId; //dataset helps to get the data stored in the html and help to call it
+  button.addEventListener('click', () => {
+      const productId = button.dataset.productId; // dataset helps to get the data stored in the HTML and help to call it in the JS
 
-    let match;
-    cart.forEach((item) => {
-        if(item.productId === productId){
-            match = item
-        }
-    })
-    if(match) {
-        match.quantity += 1
-        console.log(cart);
-    }else {
-        cart.push({
-            productId: productId,
-            quantity: 1
-        })
-        console.log(cart);
-    }
+      let match;
+      let select = document.querySelector(`.js-quant-select-${productId}`);
+      
+      if (select) {
+              const quantity = Number(select.value);
+              match = cart.find(item => item.productId === productId);
+              
+              if (match) {
+                  match.quantity += quantity;
+                  console.log(cart);
+              } else {
+                  cart.push({
+                      productId: productId,
+                      quantity: quantity
+                  })
+                  console.log(cart);;              
+                };
+      } else {
+          console.error(`Element with class .js-quant-select-${productId} not found.`);
+      }
 
-    let quant = 0
-    cart.forEach((item) => {
-    quant += item.quantity;
-    document.querySelector('.cart-quantity').innerHTML = quant
-    document.querySelector('.added-to-cart').innerHTML = `<img src = 'images/icons/checkmark.png' class='display_check'>`
+      let quant = 0;
+      cart.forEach((item) => {
+          quant += item.quantity;
+          document.querySelector('.cart-quantity').innerHTML = quant;
+          document.querySelector(`.added-to-cart-${productId}`).innerHTML = '<img class="added" src="images/icons/checkmark.png"> Added';
 
-})}
-)})
+      });
+      setTimeout(() => {
+        document.querySelector(`.added-to-cart-${productId}`).innerHTML = '';
+      },2000)
+  });
+});
