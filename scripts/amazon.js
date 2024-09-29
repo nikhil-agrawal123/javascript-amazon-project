@@ -63,12 +63,12 @@ button.addEventListener('click' , () => {
         }
     })
     if(match) {
-        match.quantity += Number(document.querySelector('.js-quant-select').value)
+        match.quantity += 1
         console.log(cart);
     }else {
         cart.push({
             productId: productId,
-            quantity: Number(document.querySelector('.js-quant-select').value)
+            quantity: 1
         })
         console.log(cart);
     }
