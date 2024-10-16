@@ -1,6 +1,6 @@
 export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-function cartStorage(){
+export function cartStorage(){
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
@@ -28,7 +28,7 @@ export function addToCart(productId) {
   }
 }
 
-export function addCart(productId){
+export function addCart(){
   let quant = 0;
         cart.forEach((item) => {
             quant += item.quantity;
@@ -37,7 +37,7 @@ export function addCart(productId){
 
 export function cartUpdate(productId) {
       let quant = addCart(productId);
-        cart.forEach((item) => {
+        cart.forEach(() => {
             document.querySelector('.cart-quantity').innerHTML = quant;
             document.querySelector(`.added-to-cart-${productId}`).innerHTML = '<img class="added" src="images/icons/checkmark.png"> Added';
   

@@ -1,4 +1,4 @@
-import { cart,delCart,addCart } from "../data/cart.js";
+import { cart,delCart,addCart, cartStorage } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { money } from "./util/price.js"; //single dot means current directory
 
@@ -35,7 +35,7 @@ function totalUpdate(){
               match = prod;
           }
       });
-      document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart(product)})`;
+      document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
 
 
       newHtml += `          
@@ -61,6 +61,7 @@ function totalUpdate(){
                     </span>
                     <span class="update-quantity-link link-primary" data-product-Id = "${product}">
                       Update
+                      <input type="number" class="quantity-input" value="${item.quantity}">
                     </span>
                     <span class="delete-quantity-link link-primary" data-product-Id = "${product}">
                       Delete
@@ -126,7 +127,7 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
         //delete cart[cart.findIndex((item) => item.productId === productId)]; no idea why this doesn't work
         delCart(productId);
         document.querySelector('.js-del-' + productId).remove();
-        document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart(productId)})`;
+        document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
         itemUpdate();
         totalUpdate();
     });
@@ -134,7 +135,25 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
 
 document.querySelectorAll('.update-quantity-link').forEach((link) => {
   link.addEventListener('click', () => {
-    console.log('update clicked');    
+    const productId = link.getAttribute('data-product-id');
+    let val = Number(document.querySelector('.quantity-input').value);
+    if (val < 1) {
+      delCart(productId);
+      document.querySelector('.js-del-' + productId).remove();
+      document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
+      itemUpdate();
+      totalUpdate();
+    }
+    else{
+    cart.forEach((item) => {
+      if (item.productId === productId) {
+        item.quantity = val;
+        document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
+        itemUpdate();
+        totalUpdate();
+      }
+    })};
+    cartStorage();
   })
 })
 }
