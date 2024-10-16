@@ -18,14 +18,20 @@ function totalPrice(){
 }
 
 function itemUpdate(){
-  let total = 0;
-  document.querySelector('.payment-summary-row').innerHTML = `
+  document.querySelector('.payment-summary-money').innerHTML = `
   <div>Items (${addCart()})</div>`
 }
 
 function totalUpdate(){
-  document.querySelector('.payment-summary-money').innerHTML = `$${totalPrice()}`
+  document.querySelector('.subtotal-row').innerHTML = `
+      <div>Total before tax:</div>
+      <div class="payment-summary-money">$${totalPrice()}</div>`
 
+  document.querySelector('.js-tax').innerHTML = `
+      <div>Estimated tax (10%):</div>
+      <div class="payment-summary-money">$${(totalPrice() * 0.1).toFixed(2)}</div>`;
+  
+}
   let newHtml = '';
   cart.forEach((item) => {
       const product = item.productId;
@@ -153,9 +159,8 @@ document.querySelectorAll('.update-quantity-link').forEach((link) => {
         totalUpdate();
       }
     })};
-    cartStorage();
   })
 })
-}
+
 itemUpdate();
 totalUpdate();
