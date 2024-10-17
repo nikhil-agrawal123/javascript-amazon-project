@@ -67,7 +67,6 @@ function totalUpdate(){
                     </span>
                     <span class="update-quantity-link link-primary" data-product-Id = "${product}">
                       Update
-                      <input type="number" class="quantity-input" value="${item.quantity}">
                     </span>
                     <span class="delete-quantity-link link-primary" data-product-Id = "${product}">
                       Delete
@@ -142,25 +141,35 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
 document.querySelectorAll('.update-quantity-link').forEach((link) => {
   link.addEventListener('click', () => {
     const productId = link.getAttribute('data-product-id');
+    document.querySelector('.link-primary').innerHTML = `
+    <input type="number" class="quantity-input" data-product-id= ${productId}>
+    <button class="update-quantity-button">Save</button>`
+  })
+})
+
+
+document.querySelectorAll('.quantity-input').forEach((link) => {
+  link.addEventListener('click', () => {
+    console.log('clicked');
+    const productId = link.getAttribute('data-product-id');
+    const item = cart.find((item) => item.productId === productId);
     let val = Number(document.querySelector('.quantity-input').value);
     if (val < 1) {
       delCart(productId);
       document.querySelector('.js-del-' + productId).remove();
       document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
-      cartStorage();  
     }
     else{
-  cart.forEach((item) => {
-    if (item.productId === productId) {
-      item.quantity = val;
-      document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
-      itemUpdate();
-      totalUpdate();
-      cartStorage();  
-      }
-    })};
-  })
+      cart.forEach((item) => {
+        if (item.productId === productId) {
+          item.quantity = val;
+          document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
+          itemUpdate();
+          totalUpdate();  
+          }
+        })
+    }
 })
-
+})
 itemUpdate();
 totalUpdate();
