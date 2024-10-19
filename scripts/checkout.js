@@ -84,7 +84,7 @@ function totalUpdate(){
                       name="delivery-${product}">
                     <div>
                       <div class="delivery-option-date">
-                        Tuesday, June 21
+                        ${dayjs().add(5, 'day').format('dddd, MMMM D')}
                       </div>
                       <div class="delivery-option-price">
                         FREE Shipping
@@ -97,7 +97,7 @@ function totalUpdate(){
                       name="delivery-${product}">
                     <div>
                       <div class="delivery-option-date">
-                        Wednesday, June 15
+                        ${dayjs().add(3, 'day').format('dddd, MMMM D')}
                       </div>
                       <div class="delivery-option-price">
                         $4.99 - Shipping
@@ -110,7 +110,7 @@ function totalUpdate(){
                       name="delivery-${product}">
                     <div>
                       <div class="delivery-option-date">
-                        Monday, June 13
+                        ${dayjs().add(1, 'day').format('dddd, MMMM D')}
                       </div>
                       <div class="delivery-option-price">
                         $9.99 - Shipping
