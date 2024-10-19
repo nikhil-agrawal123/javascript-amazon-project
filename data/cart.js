@@ -31,7 +31,7 @@ export function addToCart(productId) {
 export function addCart(){
   let quant = 0;
         cart.forEach((item) => {
-            quant += item.quantity;
+            quant += Number(item.quantity);
 })
   return quant;}
 
