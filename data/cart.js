@@ -18,9 +18,10 @@ export function addToCart(productId) {
           } else {
               cart.push({
                   productId: productId,
-                  quantity: quantity
+                  quantity: quantity,
+                  deliveryOption: 1
               })
-              console.log(cart);;              
+              console.log(cart);          
             };
             cartStorage();
   } else {

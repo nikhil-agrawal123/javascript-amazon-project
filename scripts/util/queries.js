@@ -1,3 +1,6 @@
+import { addCart , cartStorage} from "../../data/cart.js";
+import {itemUpdate,totalUpdate} from '../checkout.js'
+
 export function updateQuery(cart){
     document.querySelectorAll('.update-quantity-link').forEach((link) => {
       link.addEventListener('click', () => {

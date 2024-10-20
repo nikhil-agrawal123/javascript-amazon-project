@@ -2,7 +2,7 @@ import { cart,delCart,addCart, cartStorage } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { money } from "./util/price.js"; //single dot means current directory
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
-import { updateQuery } from "./util/queries.js";
+import {updateQuery} from "./util/queries.js";
 import {delivery} from "../data/deleivery.js";
 
 function totalPrice(){
@@ -20,21 +20,28 @@ function totalPrice(){
   return (total/100).toFixed(2);
 }
 
-function itemUpdate(){
+export function itemUpdate(){
   document.querySelector('.payment-summary-money').innerHTML = `
   <div>Items (${addCart()})</div>`
 }
 
-function totalUpdate(){
+export function totalUpdate(){
+  let tax = (totalPrice() * 0.1).toFixed(2);
+  let total = (Number(totalPrice()) + Number(tax)).toFixed(2);
   document.querySelector('.subtotal-row').innerHTML = `
       <div>Total before tax:</div>
       <div class="payment-summary-money">$${totalPrice()}</div>`
 
   document.querySelector('.js-tax').innerHTML = `
       <div>Estimated tax (10%):</div>
-      <div class="payment-summary-money">$${(totalPrice() * 0.1).toFixed(2)}</div>`;
-  
+      <div class="payment-summary-money">$${tax}</div>`;
+  document.querySelector('.total-row').innerHTML = `
+      <div>Order total:</div>
+      <div class="payment-summary-money">$${total}</div>
+    `
+
 }
+
   let newHtml = '';
   cart.forEach((item) => {
       const product = item.productId;
@@ -46,11 +53,19 @@ function totalUpdate(){
       });
       document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
 
+      const deliveryId = item.deliveryOption;
+      let deliveryOption;
+      delivery.forEach((item) => {
+          if (item.id === deliveryId) {
+              deliveryOption = item;
+          }
+      });
+      const today = dayjs().add(deliveryOption.delivery, 'day').format('dddd, MMMM D');
 
       newHtml += `          
           <div class="cart-item-container js-del-${product}">
               <div class="delivery-date">
-                Delivery date: Tuesday, June 21
+                Delivery date: ${today}
               </div>
 
               <div class="cart-item-details-grid">
@@ -78,7 +93,7 @@ function totalUpdate(){
                 </div>
 
                 <div class="delivery-options">
-                  ${deliveryDate(product)}
+                  ${deliveryDate(product,item.deliveryOption)}
                   </div>
                 </div>
               </div>
@@ -87,7 +102,6 @@ function totalUpdate(){
   })
 
   document.querySelector('.order-summary').innerHTML = newHtml;
-
 
 document.querySelectorAll('.delete-quantity-link').forEach((link) => {
     link.addEventListener('click', () => {
@@ -108,12 +122,14 @@ function deliveryDate(product) {
     </div>
   `;
 
-  delivery.forEach((item) => {
+  delivery.forEach((item,option) => {
     const today = dayjs().add(item.delivery, 'day').format('dddd, MMMM D');
     const price = item.price === 0 ? 'FREE Shipping' : `$${item.price} - Shipping`;
+    const check = item.id === 1 ? 'checked' : '';
+
     newHtml += `       
     <div class="delivery-option">            
-      <input type="radio" checked
+      <input type="radio" ${check}  
         class="delivery-option-input"
         name="delivery-${product}">
       <div>
@@ -127,9 +143,16 @@ function deliveryDate(product) {
     </div>
   `
   });
+  totalUpdate();
+  itemUpdate();
   return newHtml;
+}
+
+function completeTotal(){
+  
 }
 
 updateQuery(cart);
 itemUpdate();
 totalUpdate();
+completeTotal();
