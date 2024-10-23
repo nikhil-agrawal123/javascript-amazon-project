@@ -4,6 +4,7 @@ import { money } from "./util/price.js"; //single dot means current directory
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import {updateQuery} from "./util/queries.js";
 import {delivery} from "../data/deleivery.js";
+import { update } from "./util/update.js";
 
 function totalPrice(){
   let total = 0;
@@ -110,8 +111,7 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
         delCart(productId);
         document.querySelector('.js-del-' + productId).remove();
         document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
-        itemUpdate();
-        totalUpdate();
+        update();
     });
 });
 
@@ -143,8 +143,7 @@ function deliveryDate(product) {
     </div>
   `
   });
-  totalUpdate();
-  itemUpdate();
+  update()  
   return newHtml;
 }
 
@@ -153,6 +152,5 @@ function completeTotal(){
 }
 
 updateQuery(cart);
-itemUpdate();
-totalUpdate();
+update();
 completeTotal();

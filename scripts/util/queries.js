@@ -1,5 +1,5 @@
 import { delCart,addCart , cartStorage} from "../../data/cart.js";
-import {itemUpdate,totalUpdate} from '../checkout.js'
+import { update } from "./update.js";
 
 export function updateQuery(cart){
     document.querySelectorAll('.update-quantity-link').forEach((link) => {
@@ -33,8 +33,7 @@ export function updateQuery(cart){
               delCart(productId);
               document.querySelector('.js-del-' + productId).remove();
               document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
-              itemUpdate();
-              totalUpdate();
+              update();
               return;
           }else{
             cart.forEach((item) => {
@@ -56,8 +55,7 @@ export function updateQuery(cart){
               Delete
             </span>
             `
-          itemUpdate();
-          totalUpdate();
+          update();
           cartStorage(productId,quantity);
           updateQuery(cart);
           }
