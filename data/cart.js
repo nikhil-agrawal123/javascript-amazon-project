@@ -13,7 +13,7 @@ export function addToCart(productId) {
           match = cart.find(item => item.productId === productId);
           
           if (match) {
-              match.quantity += quantity;
+              match.quantity += Number(quantity);
               console.log(cart);
           } else {
               cart.push({
