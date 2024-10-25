@@ -5,6 +5,8 @@ import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import {updateQuery} from "./util/queries.js";
 import {delivery} from "../data/deleivery.js";
 
+let ShippingCost = {}
+
 function totalPrice(){
   let total = 0;
   cart.forEach((item) => {
@@ -39,7 +41,6 @@ export function totalUpdate(){
       <div>Order total:</div>
       <div class="payment-summary-money">$${total}</div>
     `
-
 }
 
   let newHtml = '';
@@ -165,12 +166,23 @@ document.querySelectorAll('.delivery-option-input').forEach((input) => {
     });
     const deliveryOption = delivery.find((item) => item.id === parseInt(optionId));
     const newDate = deliveryOption ? dayjs().add(deliveryOption.delivery, 'day').format('dddd, MMMM D') : 'N/A';
+    ShippingCost[productId] = deliveryOption.price;   
     document.querySelector(`.js-del-${productId} .delivery-date`).innerText = `Delivery date: ${newDate}`;
+    document.querySelector('.js-shipping').innerHTML = `<div>Shipping &amp; handling:</div>
+            <div class="payment-summary-money">$${costCal(ShippingCost)}</div>`
     updateQuery(cart);
     itemUpdate();
     totalUpdate();
   });
 });
+
+function costCal(ShippingCost){
+  let x = 0
+  for(let [key,value] of Object.entries(ShippingCost)){
+    x = x+ value;
+}
+return x.toFixed(2);
+}
 
 updateQuery(cart);
 itemUpdate();
