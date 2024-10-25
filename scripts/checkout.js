@@ -23,13 +23,15 @@ function totalPrice(){
 }
 
 export function itemUpdate(){
-  document.querySelector('.payment-summary-money').innerHTML = `
-  <div>Items (${addCart()})</div>`
+  document.querySelector('.js-total').innerHTML = `
+  <div>Items (${addCart()})</div>
+  <div class="payment-summary-money">$${Number(totalPrice())}</div>
+  `
 }
 
 export function totalUpdate(){
   let tax = (totalPrice() * 0.1).toFixed(2);
-  let total = (Number(totalPrice()) + Number(tax)).toFixed(2);
+  let total = (Number(totalPrice()) + Number(tax) + Number(costCal(ShippingCost))).toFixed(2);
   document.querySelector('.subtotal-row').innerHTML = `
       <div>Total before tax:</div>
       <div class="payment-summary-money">$${totalPrice()}</div>`
@@ -40,6 +42,10 @@ export function totalUpdate(){
   document.querySelector('.total-row').innerHTML = `
       <div>Order total:</div>
       <div class="payment-summary-money">$${total}</div>
+    `
+  document.querySelector('.js-shipping').innerHTML = `
+      <div>Shipping &amp; handling:</div>
+      <div class="payment-summary-money">$${Number(costCal(ShippingCost))}</div>
     `
 }
 
@@ -169,19 +175,20 @@ document.querySelectorAll('.delivery-option-input').forEach((input) => {
     ShippingCost[productId] = deliveryOption.price;   
     document.querySelector(`.js-del-${productId} .delivery-date`).innerText = `Delivery date: ${newDate}`;
     document.querySelector('.js-shipping').innerHTML = `<div>Shipping &amp; handling:</div>
-            <div class="payment-summary-money">$${costCal(ShippingCost)}</div>`
+            <div class="payment-summary-money">$${Number(costCal(ShippingCost))}</div>`
     updateQuery(cart);
     itemUpdate();
     totalUpdate();
+    cartStorage();
   });
 });
 
 function costCal(ShippingCost){
   let x = 0
   for(let [key,value] of Object.entries(ShippingCost)){
-    x = x+ value;
+    x = x + value;
 }
-return x.toFixed(2);
+return Number(x.toFixed(2));
 }
 
 updateQuery(cart);
