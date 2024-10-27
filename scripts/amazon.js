@@ -42,6 +42,8 @@ products.forEach((product)=>{
             </select>
           </div>
 
+          ${product.chart()}
+
           <div class="product-spacer"></div>
 
           <div class="added-to-cart-${product.id} added-to-cart">
