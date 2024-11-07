@@ -1,22 +1,39 @@
 import { cart,delCart,addCart, cartStorage } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { products,loadProduct } from "../data/products.js";
 import { money } from "./util/price.js"; //single dot means current directory
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import {updateQuery} from "./util/queries.js";
 import {delivery} from "../data/deleivery.js";
 
+new Promise((resolve)=>{
+  loadProduct(()=>{
+    resolve();
+  })
+}).then(()=>{
+  cart.forEach((item) => {
+    let product = item.productId;
+    deliveryDate(product);
+    date_change();
+  })
+  totalPrice();
+  totalUpdate();
+  itemUpdate();
+  updateQuery(cart);
+
+  chec();
+  
+})
 let ShippingCost = {}
+
+function match_product(product) {
+  return products.find((prod) => prod.id === product);
+}
 
 function totalPrice(){
   let total = 0;
   cart.forEach((item) => {
     const product = item.productId;
-    let match;
-    products.forEach((prod) => {
-      if (prod.id === product) {
-        match = prod;
-      }
-    });
+    let match = match_product(product);
     total += Number(match.priceCents * item.quantity);
   });
   return (total/100).toFixed(2);
@@ -49,15 +66,11 @@ export function totalUpdate(){
     `
 }
 
+function chec(){
   let newHtml = '';
   cart.forEach((item) => {
       const product = item.productId;
-      let match;
-      products.forEach((prod) => {
-          if (prod.id === product) {
-              match = prod;
-          }
-      });
+      let match = match_product(product);
       document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
 
       const deliveryId = item.deliveryOption;
@@ -107,8 +120,9 @@ export function totalUpdate(){
             </div>`
 
   })
-
   document.querySelector('.order-summary').innerHTML = newHtml;
+}
+
 
 document.querySelectorAll('.delete-quantity-link').forEach((link) => {
     link.addEventListener('click', () => {
@@ -161,27 +175,29 @@ function deliveryDate(product) {
   return newHtml;
 }
 
-document.querySelectorAll('.delivery-option-input').forEach((input) => {
-  input.addEventListener('change', () => {
-    const productId = input.getAttribute('data-product-id');
-    const optionId = input.getAttribute('data-option-id');
-    cart.forEach((item) => {
-      if (item.productId === productId) {
-        item.deliveryOption = parseInt(optionId);
-      }
+function date_change(){
+  document.querySelectorAll('.delivery-option-input').forEach((input) => {
+    input.addEventListener('change', () => {
+      const productId = input.getAttribute('data-product-id');
+      const optionId = input.getAttribute('data-option-id');
+      cart.forEach((item) => {
+        if (item.productId === productId) {
+          item.deliveryOption = parseInt(optionId);
+        }
+      });
+      const deliveryOption = delivery.find((item) => item.id === parseInt(optionId));
+      const newDate = deliveryOption ? dayjs().add(deliveryOption.delivery, 'day').format('dddd, MMMM D') : 'N/A';
+      ShippingCost[productId] = deliveryOption.price;   
+      document.querySelector(`.js-del-${productId} .delivery-date`).innerText = `Delivery date: ${newDate}`;
+      document.querySelector('.js-shipping').innerHTML = `<div>Shipping &amp; handling:</div>
+              <div class="payment-summary-money">$${Number(costCal(ShippingCost))}</div>`
+      updateQuery(cart);
+      itemUpdate();
+      totalUpdate();
+      cartStorage();
     });
-    const deliveryOption = delivery.find((item) => item.id === parseInt(optionId));
-    const newDate = deliveryOption ? dayjs().add(deliveryOption.delivery, 'day').format('dddd, MMMM D') : 'N/A';
-    ShippingCost[productId] = deliveryOption.price;   
-    document.querySelector(`.js-del-${productId} .delivery-date`).innerText = `Delivery date: ${newDate}`;
-    document.querySelector('.js-shipping').innerHTML = `<div>Shipping &amp; handling:</div>
-            <div class="payment-summary-money">$${Number(costCal(ShippingCost))}</div>`
-    updateQuery(cart);
-    itemUpdate();
-    totalUpdate();
-    cartStorage();
   });
-});
+}
 
 function costCal(ShippingCost){
   let x = 0
@@ -190,7 +206,3 @@ function costCal(ShippingCost){
 }
 return Number(x.toFixed(2));
 }
-
-updateQuery(cart);
-itemUpdate();
-totalUpdate();

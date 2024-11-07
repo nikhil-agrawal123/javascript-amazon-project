@@ -4,7 +4,6 @@ class Products{
 #hello; // private field declaration
 
   constructor(details){
-    console.log('Products created');
     this.id = details.id;
     this.image = details.image;
     this.name = details.name;
@@ -13,7 +12,7 @@ class Products{
   }
 
   getStars(){
-    return `images/ratings/rating-${this.rating.stars}.png`
+    return `images/ratings/rating-${this.rating.stars*10}.png`
   }
 
   getPrice(){
@@ -30,7 +29,6 @@ class clothing extends Products{ //extends used for inheritance
   
   constructor(details){
     super(details);
-    console.log('Clothing created');
     this.type = details.type;
     this.sizeChartLink = details.sizeChartLink;
   }
@@ -40,6 +38,26 @@ class clothing extends Products{ //extends used for inheritance
   }
 }
 
+export let products = loadProduct()
+
+export function loadProduct(fun) {
+  let xhr = new XMLHttpRequest()
+  let x = []
+  xhr.addEventListener('load',()=>{
+    JSON.parse(xhr.response).forEach((detail) => {
+      if (detail.type === 'clothing') {
+        x.push(new clothing(detail));
+      } else {
+        x.push(new Products(detail))}      
+    });
+    fun()
+  })
+  xhr.open('GET','https://www.supersimplebackend.dev/products')
+  xhr.send()
+  return x
+}
+
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -706,24 +724,4 @@ export const products = [
     return new Products(product);
   }
 })
-
-const newP = new clothing({
-    id: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
-    image: "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
-    name: "Adults Plain Cotton T-Shirt - 2 Pack",
-    rating: {
-      stars: 45,
-      count: 56
-    },
-    priceCents: 799,
-    keywords: [
-      "tshirts",
-      "apparel",
-      "mens"
-    ],
-    type: "clothing",
-    sizeChartLink: "images/clothing-size-chart.png"
-  }) 
-
-console.log(newP); //inheritance working
-console.log(newP.getPrice()); //method from parent class working
+  */
