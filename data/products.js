@@ -50,11 +50,17 @@ export function loadProduct(fun) {
       } else {
         x.push(new Products(detail))}      
     });
-    fun()
+    try{
+      fun()
+    }
+    catch(error){
+      console.log('No function provided')
+    }
   })
   xhr.open('GET','https://www.supersimplebackend.dev/products')
   xhr.send()
   return x
+
 }
 
 /*

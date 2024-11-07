@@ -1,5 +1,5 @@
 import { delCart,addCart , cartStorage} from "../../data/cart.js";
-import { itemUpdate , totalUpdate } from "../checkout.js";
+import { itemUpdate , totalUpdate ,del_pro} from "../checkout.js";
 
 export function updateQuery(cart){
     document.querySelectorAll('.update-quantity-link').forEach((link) => {
@@ -19,48 +19,50 @@ export function updateQuery(cart){
         </span>`
   
         saveQuery(cart);
+        del_pro();
       })
     })
   }
   
-  function saveQuery(cart){
-    document.querySelectorAll('.save-quantity-link').forEach((link) => {
-      link.addEventListener('click', () => {
-          const productId = link.getAttribute('data-product-id');
-          const quantity = Number(document.querySelector('.quantity-input').value);
+function saveQuery(cart){
+  document.querySelectorAll('.save-quantity-link').forEach((link) => {
+    link.addEventListener('click', () => {
+        const productId = link.getAttribute('data-product-id');
+        const quantity = Number(document.querySelector('.quantity-input').value);
 
-          if (quantity <= 0) {
-              delCart(productId);
-              document.querySelector('.js-del-' + productId).remove();
-              document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
-              itemUpdate();
-              totalUpdate()
-              return;
-          }else{
-            cart.forEach((item) => {
-              if (item.productId === productId) {
-                  item.quantity = quantity;
-              }
-          })
-          
-          document.querySelector('.quantity-label').innerHTML = quantity;
-          document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`
-          document.querySelector('.product-quantity').innerHTML = `
-            <span>
-              Quantity: <span class="quantity-label">${quantity}</span>
-            </span>
-            <span class="update-quantity-link link-primary" data-product-Id = "${productId}">
-              Update
-            </span>
-            <span class="delete-quantity-link link-primary" data-product-Id = "${productId}">
-              Delete
-            </span>
-            `
-          itemUpdate();
-          totalUpdate()
-          cartStorage(productId,quantity);
-          updateQuery(cart);
-          }
-      });
+        if (quantity <= 0) {
+            delCart(productId);
+            document.querySelector('.js-del-' + productId).remove();
+            document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
+            itemUpdate();
+            totalUpdate()
+            return;
+        }else{
+          cart.forEach((item) => {
+            if (item.productId === productId) {
+                item.quantity = quantity;
+            }
+        })
+        
+        document.querySelector('.quantity-label').innerHTML = quantity;
+        document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`
+        document.querySelector('.product-quantity').innerHTML = `
+          <span>
+            Quantity: <span class="quantity-label">${quantity}</span>
+          </span>
+          <span class="update-quantity-link link-primary" data-product-Id = "${productId}">
+            Update
+          </span>
+          <span class="delete-quantity-link link-primary" data-product-Id = "${productId}">
+            Delete
+          </span>
+          `
+        itemUpdate();
+        totalUpdate()
+        cartStorage(productId,quantity);
+        updateQuery(cart);
+        del_pro();
+        }
     });
-  }
+  });
+}

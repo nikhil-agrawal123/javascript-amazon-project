@@ -18,8 +18,6 @@ new Promise((resolve)=>{
   totalPrice();
   totalUpdate();
   itemUpdate();
-  updateQuery(cart);
-
   chec();
   
 })
@@ -121,10 +119,12 @@ function chec(){
 
   })
   document.querySelector('.order-summary').innerHTML = newHtml;
+  del_pro();
+  updateQuery(cart);
 }
 
-
-document.querySelectorAll('.delete-quantity-link').forEach((link) => {
+export function del_pro(){
+  document.querySelectorAll('.delete-quantity-link').forEach((link) => {
     link.addEventListener('click', () => {
         const productId = link.getAttribute('data-product-id');
         //delete cart[cart.findIndex((item) => item.productId === productId)]; no idea why this doesn't work
@@ -133,8 +133,10 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) => {
         document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (${addCart()})`;
         itemUpdate();
         totalUpdate()
+        updateQuery(cart);
     });
 });
+}
 
 function deliveryDate(product) {
   let newHtml = `
