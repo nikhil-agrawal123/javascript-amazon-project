@@ -1,0 +1,2 @@
+async returns a promise from a function
+promise all also return a promise from a promise by using then 
